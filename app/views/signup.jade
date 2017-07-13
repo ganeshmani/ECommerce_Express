@@ -1,0 +1,22 @@
+doctype html
+html(lang='en')
+  head
+    title Jade
+  body
+    form(method='post',action='http://localhost:3000/users/signup')
+      div
+        label First Name
+        input(type='text', placeholder='Enter FirstName', name='firstName', required='')
+        label Last Name
+        input(type='text', placeholder='Enter lastName', name='lastName', required='')
+        label
+          b Email
+        input(type='text', placeholder='Enter Email', name='email', required='')
+        label
+          b Password
+        input(type='password', placeholder='Enter Password', name='password', required='')
+
+        label Address
+        input(type='textarea', placeholder='Address', name='address')
+        div
+          button.signupbtn(type='submit') Sign Up

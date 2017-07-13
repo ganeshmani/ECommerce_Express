@@ -1,0 +1,15 @@
+doctype html
+html(lang='en')
+  head
+    title Document
+  body
+    div
+      form(method='post',action='http://localhost:3000/users/login')
+        div
+          label
+            b Username
+          input(type='text', placeholder='Enter Email', name='email', required='')
+          label
+            b Password
+          input(type='password', placeholder='Enter Password', name='password', required='')
+          button(type='submit') Login

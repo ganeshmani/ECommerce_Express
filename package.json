@@ -1,0 +1,13 @@
+{
+  "name": "mvcapp",
+  "version": "0.0.1",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.3",
+    "fs": "0.0.1-security",
+    "jade": "^1.11.0",
+    "mongoose": "^4.11.1",
+    "morgan": "^1.8.2"
+  }
+}
