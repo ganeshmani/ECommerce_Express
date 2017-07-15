@@ -20,6 +20,11 @@ module.exports.controller = function(app){
     });
 
 
+    UserRoute.get('/signup/show',function(request,response){
+
+         response.render('signup');
+
+    });
 
      UserRoute.post('/signup',function(request,response){
           if(request.body.firstName !=null && request.body.lastName!=null && request.body.email !=null && request.body.password !=null)
@@ -39,8 +44,16 @@ module.exports.controller = function(app){
                   response.send(myResponse);
                }
                else {
-                   var myResponse =  responseGenerator.generateResponse(false,"successfully signed up",200,newUser);
-                   response.send(myResponse);
+
+                   /*var myResponse =  responseGenerator.generateResponse(false,"successfully signed up",200,newUser);
+                   response.send(myResponse);*/
+                   request.session.user = newUser;
+                   delete request.session.user.password;
+                   response.redirect('/users/dashboard');
+                  //response.render('dashboard', {user : newUser});
+                   /*var myResponse =  responseGenerator.generateResponse(false,"successfully signed up",200,newUser);
+                   response.send(myResponse);*/
+
                }
 
             })
@@ -57,6 +70,15 @@ module.exports.controller = function(app){
           }
 
      });
+
+    //dashboard module
+    UserRoute.get('/dashboard',function(request,response){
+
+           response.render('dashboard',{ user : request.session.user });
+    });
+
+
+
      //login module
      UserRoute.post('/login',function(request,response){
              UserModel.findOne({$and : [{ email : request.body.email },{ password : request.body.password }]},function(err,result){
@@ -70,8 +92,14 @@ module.exports.controller = function(app){
                   response.send(myResponse);
                 }
                 else {
+
                   var myResponse = responseGenerator.generateResponse(false,"logged in succesfully",200,result);
                   response.send(myResponse);
+
+                  /*var myResponse = responseGenerator.generateResponse(false,"logged in succesfully",200,result);
+                  response.send(myResponse);*/
+                  response.render('success_login', { user : result });
+
                 }
 
              });

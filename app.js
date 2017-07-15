@@ -11,15 +11,25 @@ var fs = require('fs');
 
 var path = require('path');
 
+var session = require('express-session');
 
 app.use(bodyParser.json({ limit: '10mb',extended : true }));
 app.use(bodyParser.urlencoded({ limit : '10mb',extendede : true }));
 app.use(logger('dev'));
 app.set('view engine','jade');
 app.set('views',path.join(__dirname + '/app/views'));
+app.use(cookieParser());
 
 var dbPath = "mongodb://localhost/mvcdb";
 
+app.use(session({
+  name : 'myCookie',
+  secret : 'myAppSecret',
+  resave : true,
+  httpOnly : true,
+  saveUninitialized : true,
+  cookie : { secure  : false }
+}));
 
 
 db = mongoose.connect(dbPath);
