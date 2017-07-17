@@ -1,7 +1,7 @@
 
 var mongoose = require('mongoose');
 
-var UserModel = require('UserModel');
+var UserModel = mongoose.model('UserModel');
 
 exports.loggedInUser = function(request,response,next)
 {
@@ -18,8 +18,6 @@ exports.loggedInUser = function(request,response,next)
       }
    });
   }
-  
-
 }
 
 exports.checkLogin = function(request,response,next)

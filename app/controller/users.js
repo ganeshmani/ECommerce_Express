@@ -11,7 +11,18 @@ var UserModel = mongoose.model('UserModel');
 
 var responseGenerator = require('./../../libs/generateResponse.js');
 
+var passport = require('passport');
+var Strategy = require('passport-facebook').Strategy;
+
+
+
 module.exports.controller = function(app){
+
+
+   UserRoute.get('/',function(request,response){
+     console.log(request.session);
+       response.render('home');
+   });
 
     UserRoute.get('/login/show',function(request,response){
 
@@ -68,16 +79,34 @@ module.exports.controller = function(app){
              }
              response.send(errResponse);
           }
-
      });
 
     //dashboard module
     UserRoute.get('/dashboard',function(request,response){
-
-           response.render('dashboard',{ user : request.session.user });
+        response.render('dashboard',{ user : request.session.user });
     });
 
+    UserRoute.get('/login/facebook',
 
+     passport.authenticate('google', { scope : ['profile','email'] } ));
+
+    UserRoute.get('/login/facebook/return',
+       passport.authenticate('google', { failureRedirect : '/login/show' }),
+       function(request,response){
+         console.log(request.session);
+          response.render('profile', { user : request.user });
+       });
+
+      UserRoute.get('/profile',require('connect-ensure-login').ensureLoggedIn(),
+        function(request,response){
+          console.log(request.session);
+            response.render('profile',{ user : request.user });
+        });
+
+       UserRoute.get('/logout',function(request,response){
+         request.logout();
+         response.redirect('/');
+       });
 
      //login module
      UserRoute.post('/login',function(request,response){
@@ -93,12 +122,14 @@ module.exports.controller = function(app){
                 }
                 else {
 
-                  var myResponse = responseGenerator.generateResponse(false,"logged in succesfully",200,result);
-                  response.send(myResponse);
+                  /*var myResponse = responseGenerator.generateResponse(false,"logged in succesfully",200,result);
+                  response.send(myResponse);*/
+
+                  response.redirect('dashboard');
 
                   /*var myResponse = responseGenerator.generateResponse(false,"logged in succesfully",200,result);
                   response.send(myResponse);*/
-                  response.render('success_login', { user : result });
+                  //response.render('success_login', { user : result });
 
                 }
 

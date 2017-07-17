@@ -1,7 +1,7 @@
 doctype html
 html(lang='en')
   head
-    title Document
+    title Home
   body
     div
       form(method='post',action='http://localhost:3000/users/login')
@@ -9,7 +9,14 @@ html(lang='en')
           label
             b Username
           input(type='text', placeholder='Enter Email', name='email', required='')
+          br
           label
             b Password
           input(type='password', placeholder='Enter Password', name='password', required='')
+          br
           button(type='submit') Login
+          br
+    div
+      form(action='http://localhost:3000/users/login/facebook')
+        div
+          button(type ='submit1') Login with Facebook
