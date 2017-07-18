@@ -16,4 +16,9 @@ html(lang='en')
               p Product Name -
                 a(href='http://localhost:3000/products/product/edit/show/'+'#{singleProduct._id}') #{singleProduct.productName}
               p
-                a(href='http://localhost:3000/products/product/addcart/'+'#{singleProduct._id}')  Add To Cart
+              form(method='post',action='http://localhost:3000/products/product/addcart/'+'#{singleProduct._id}')
+                div
+                 button(type='submit') Add To Cart
+              form(method='post',action='http://localhost:3000/products/product/delete/'+'#{singleProduct._id}')
+                div
+                 button(type='submit') Delete product

@@ -22,7 +22,7 @@ var productModel = mongoose.model('productSchema')
 module.exports.controller = function(app){
 
     UserRoute.get('/',function(request,response){
-     console.log(request.session);
+     //console.log(request.session);
        response.render('home');
    });
 
@@ -84,7 +84,7 @@ module.exports.controller = function(app){
                  userName : request.body.firstName+''+request.body.lastName,
                  email : request.body.email,
                  password : request.body.password,
-                 Address : request.body.Address
+                 Address : request.body.address
 
             });
 
@@ -123,6 +123,7 @@ module.exports.controller = function(app){
 
     //dashboard module
     UserRoute.get('/dashboard',function(request,response){
+        console.log(request.session);
         response.render('dashboard',{ user : request.session.user });
     });
 

@@ -1,0 +1,20 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(http-equiv='X-UA-Compatible', content='ie=edge')
+    title Cart
+  body
+    .container
+      div(style='float : right')
+         ol
+          each singleProduct in cart
+            li
+              p Product Name - #{singleProduct.productName}
+              p Product Type - #{singleProduct.productType}
+              p Title - #{singleProduct.title}
+              p productDetails - #{singleProduct.productDetails}
+              p Price - #{singleProduct.price}
+              p Quantity - #{singleProduct.quantity}
+              a(href='http://localhost:3000/products/productview') Back
