@@ -14,12 +14,14 @@ var responseGenerator = require('./../../libs/generateResponse.js');
 var passport = require('passport');
 var Strategy = require('passport-facebook').Strategy;
 
+var nodemailer = require('nodemailer');
+
+var productModel = mongoose.model('productSchema')
 
 
 module.exports.controller = function(app){
 
-
-   UserRoute.get('/',function(request,response){
+    UserRoute.get('/',function(request,response){
      console.log(request.session);
        response.render('home');
    });
@@ -30,11 +32,49 @@ module.exports.controller = function(app){
 
     });
 
-
     UserRoute.get('/signup/show',function(request,response){
 
          response.render('signup');
 
+    });
+
+    UserRoute.get('/forgotpassword/show',function(request,response){
+        response.render('forgotpassword');
+    });
+
+    UserRoute.post('/forgotpassword',function(request,response){
+         var email = request.body.email;
+
+
+         let transporter = nodemailer.createTransport({
+           service : 'gmail',
+           secure : false,
+           port : 25,
+           auth : {
+             user : 'ganeshmani009@gmail.com',
+             pass : 'Sridevi!23789'
+           },
+           tls : {
+             rejectUnauthorized : false
+           }
+
+         });
+
+         let HelperOptions = {
+             from : 'GaneshMani',
+             to : email,
+             subject : 'Hello World!',
+             text : 'it is working'
+         };
+         transporter.sendMail(HelperOptions,(err,info) => {
+           if(err)
+           {
+              console.log(err);
+           }
+           else {
+               console.log(info);
+           }
+         })
     });
 
      UserRoute.post('/signup',function(request,response){
@@ -94,7 +134,8 @@ module.exports.controller = function(app){
        passport.authenticate('google', { failureRedirect : '/login/show' }),
        function(request,response){
          console.log(request.session);
-          response.render('profile', { user : request.user });
+            response.render('product_view', { user : request.user });
+          //response.render('profile', { user : request.user });
        });
 
       UserRoute.get('/profile',require('connect-ensure-login').ensureLoggedIn(),
@@ -124,8 +165,28 @@ module.exports.controller = function(app){
 
                   /*var myResponse = responseGenerator.generateResponse(false,"logged in succesfully",200,result);
                   response.send(myResponse);*/
+                  //console.log(request.session);
 
-                  response.redirect('dashboard');
+                       productModel.find({},function(error,result){
+                           if(err)
+                           {
+                             var myResponse = responseGenerator.generateResponse(true,"some error occured",500,error);
+                             response.send(myResponse);
+                           }
+                           else {
+                             console.log(result);
+                             //var myResponse = responseGenerator.generateResponse(false,"",200,result);
+                             //response.send(myResponse);
+                             response.render('product_view', { "product" : result });
+                           }
+
+                       });
+
+                  /*if(!request.session.product)
+                  {
+                    request.session.product = "";
+                  }*/
+
 
                   /*var myResponse = responseGenerator.generateResponse(false,"logged in succesfully",200,result);
                   response.send(myResponse);*/

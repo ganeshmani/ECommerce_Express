@@ -1,0 +1,26 @@
+doctype html
+html(lang='en')
+  head
+    title ProductCreate
+  body
+    form(method='post',action='http://localhost:3000/products/product/create')
+      div
+        label Product Name
+        input(type='text', placeholder='Enter ProductName', name='productName', required='')
+        br
+        label Product Type
+        input(type='text', placeholder='Enter Product Type', name='productType', required='')
+        br
+        label
+          b Title
+        input(type='text', placeholder='Enter Title', name='title', required='')
+        br
+        label
+          b Product Details
+        input(type='textarea', placeholder='Enter Details', name='productDetails', required='')
+        br
+        label Price
+        input(type='Number', placeholder='Enter Price', name='price')
+        br
+        div
+          button(type='submit') Create

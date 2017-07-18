@@ -1,0 +1,26 @@
+doctype html
+html(lang='en')
+  head
+    title Product Edit
+  body
+    form(method='post',action='http://localhost:3000/products/product/edit/#{product._id}')
+      div
+        label Product Name
+        input(type='text', placeholder='Enter ProductName', name='productName', value='#{product.productName}', required='')
+        br
+        label Product Type
+        input(type='text', placeholder='Enter Product Type', name='productType', value='#{product.productType}',required='')
+        br
+        label
+          b Title
+        input(type='text', placeholder='Enter Title', name='title', value='#{product.title}', required='')
+        br
+        label
+          b product Details
+        input(type='textarea', placeholder='Enter Details', name='productDetails', value='#{product.productDetails}', required='')
+        br
+        label Price
+        input(type='Number', placeholder='Enter Price', value='#{product.price}', name='price')
+        br
+        div
+          button(type='submit') Edit
