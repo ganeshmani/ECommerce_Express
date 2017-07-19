@@ -54,12 +54,13 @@ module.exports.controller = function(app){
            }
            else {
 
-             UserModel.findOneAndUpdate({'email' : request.body.email },pass,function(err,res){
+             UserModel.findOneAndUpdate({'email' : request.body.email },{ $set : { password : pass }},function(err,res){
                  if(err){
                    var myResponse = responseGenerator.generateResponse(true,"some error"+err,500,null);
                    response.send(myResponse);
                  }
                  else {
+                   console.log(res);
                    response.redirect('/users/login/show');
 
                  }
@@ -158,7 +159,7 @@ module.exports.controller = function(app){
        passport.authenticate('google', { failureRedirect : '/login/show' }),
        function(request,response){
          console.log(request.session);
-         productModel.find({},function(error,result){
+         productModel.find({ 'userid' : request.user._id },function(error,result){
              if(err)
              {
                var myResponse = responseGenerator.generateResponse(true,"some error occured"+error,500,null);
