@@ -17,8 +17,8 @@ var Strategy = require('passport-facebook').Strategy;
 var nodemailer = require('nodemailer');
 
 var productModel = mongoose.model('productSchema')
-
-
+var flash = require('req-flash');
+app.use(flash());
 module.exports.controller = function(app){
 
     UserRoute.get('/',function(request,response){
@@ -43,10 +43,33 @@ module.exports.controller = function(app){
     });
 
     UserRoute.post('/forgotpassword',function(request,response){
-         var email = request.body.email;
+         //var email = request.body.email;
+           var pass = request.body.password;
+           var repass = request.body.repassword;
+
+           if(pass!=repass){
+             /*request.flash('errorMessage','Password MisMatch');
+             response.send(request.flash());*/
+               //response.render('forgotpassword',{ alert : request.flash("Password Mismatch") })
+           }
+           else {
+
+             UserModel.findOneAndUpdate({'email' : request.body.email },pass,function(err,res){
+                 if(err){
+                   var myResponse = responseGenerator.generateResponse(true,"some error"+err,500,null);
+                   response.send(myResponse);
+                 }
+                 else {
+                   response.redirect('/users/login/show');
+
+                 }
+
+             });
+
+           }
 
 
-         let transporter = nodemailer.createTransport({
+         /*let transporter = nodemailer.createTransport({
            service : 'gmail',
            secure : false,
            port : 25,
@@ -74,7 +97,7 @@ module.exports.controller = function(app){
            else {
                console.log(info);
            }
-         })
+         });*/
     });
 
      UserRoute.post('/signup',function(request,response){
@@ -135,7 +158,17 @@ module.exports.controller = function(app){
        passport.authenticate('google', { failureRedirect : '/login/show' }),
        function(request,response){
          console.log(request.session);
-            response.render('product_view', { user : request.user });
+         productModel.find({},function(error,result){
+             if(err)
+             {
+               var myResponse = responseGenerator.generateResponse(true,"some error occured"+error,500,null);
+               response.send(myResponse);
+             }
+             else {
+               console.log(result);
+            response.render('product_view', { "product" : result,"user" : request.user });
+          }
+        });
           //response.render('profile', { user : request.user });
        });
 
@@ -147,12 +180,13 @@ module.exports.controller = function(app){
 
        UserRoute.get('/logout',function(request,response){
          request.logout();
-         response.redirect('/');
+         response.redirect('/users');
        });
 
      //login module
      UserRoute.post('/login',function(request,response){
              UserModel.findOne({$and : [{ email : request.body.email },{ password : request.body.password }]},function(err,result){
+                console.log(result);
                 if(err)
                 {
                   var myResponse = responseGenerator.generateResponse(true,"some error occured"+err,500,null);
@@ -163,12 +197,15 @@ module.exports.controller = function(app){
                   response.send(myResponse);
                 }
                 else {
+                  console.log(result);
+                  request.session.user = result;
+                  delete request.session.user.password;
 
                   /*var myResponse = responseGenerator.generateResponse(false,"logged in succesfully",200,result);
                   response.send(myResponse);*/
                   //console.log(request.session);
 
-                       productModel.find({},function(error,result){
+                       productModel.find({ 'userid' : request.session.user._id },function(error,result){
                            if(err)
                            {
                              var myResponse = responseGenerator.generateResponse(true,"some error occured",500,error);
@@ -178,7 +215,7 @@ module.exports.controller = function(app){
                              console.log(result);
                              //var myResponse = responseGenerator.generateResponse(false,"",200,result);
                              //response.send(myResponse);
-                             response.render('product_view', { "product" : result });
+                             response.render('product_view', { "product" : result, "user" : request.session.user });
                            }
 
                        });

@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var logger = require('morgan');
 var fs = require('fs');
+var flash = require('req-flash');
 
 var path = require('path');
 
@@ -37,7 +38,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-
+app.use(flash());
 db = mongoose.connect(dbPath);
 
 mongoose.connection.once('open',function()

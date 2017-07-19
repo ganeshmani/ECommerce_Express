@@ -10,7 +10,8 @@ var productSchema = new Schema({
     productType : {type : String , default : null },
     title       : { type : String , default : null },
     productDetails : { type : String , default : null },
-    price       : { type : Number , default : null }
+    price       : { type : Number , default : null },
+    userid   :   { type : String , default : null }
 });
 
 mongoose.model('productSchema',productSchema);

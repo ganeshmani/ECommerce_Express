@@ -8,6 +8,8 @@ html(lang='en')
   body
     .container
       div(style='float : right')
+       a(href='http://localhost:3000/products/productview') Back
+      div
          ol
           each singleProduct in cart
             li
@@ -17,4 +19,6 @@ html(lang='en')
               p productDetails - #{singleProduct.productDetails}
               p Price - #{singleProduct.price}
               p Quantity - #{singleProduct.quantity}
-              a(href='http://localhost:3000/products/productview') Back
+              form(method='post',action='http://localhost:3000/products/product/deleteCart/'+'#{singleProduct._id}')
+                div
+                 button(type='submit') Remove

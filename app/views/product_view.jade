@@ -9,16 +9,26 @@ html(lang='en')
     .container
       div(style='float : right')
         a(href='http://localhost:3000/products/product/create/show') Create Product
+        &nbsp;&nbsp;
         a(href='http://localhost:3000/products/product/cart') Cart
-        ol
-          each singleProduct in product
-            li
-              p Product Name -
-                a(href='http://localhost:3000/products/product/edit/show/'+'#{singleProduct._id}') #{singleProduct.productName}
-              p
-              form(method='post',action='http://localhost:3000/products/product/addcart/'+'#{singleProduct._id}')
-                div
-                 button(type='submit') Add To Cart
-              form(method='post',action='http://localhost:3000/products/product/delete/'+'#{singleProduct._id}')
-                div
+        &nbsp;&nbsp;
+        h3 Welcome #{user.userName}
+        &nbsp;
+        a(href='http://localhost:3000/users/logout') Logout
+      ol
+        each singleProduct in product
+          li
+            p Product Name -
+              a(href='http://localhost:3000/products/product/view/'+'#{singleProduct._id}') #{singleProduct.productName}
+            p
+             form(method='post',action='http://localhost:3000/products/product/addcart/'+'#{singleProduct._id}')
+              div
+               button(type='submit') Add To Cart
+             &nbsp;
+             form(action='http://localhost:3000/products/product/edit/show/'+'#{singleProduct._id}')
+               div
+                button(type='submit') Edit Product
+             &nbsp;
+             form(method='post',action='http://localhost:3000/products/product/delete/'+'#{singleProduct._id}')
+               div
                  button(type='submit') Delete product

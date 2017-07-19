@@ -6,17 +6,23 @@ html(lang='en')
     div
       form(method='post',action='http://localhost:3000/users/login')
         div
+         p
           label
-            b Username
+            b Username &nbsp;
           input(type='text', placeholder='Enter Email', name='email', required='')
           br
+
+         p
           label
-            b Password
+            b Password &nbsp;
           input(type='password', placeholder='Enter Password', name='password', required='')
           br
-          button(type='submit') Login
+
+         p
+          button(type='submit') Login &nbsp;
           a(href='http://localhost:3000/users/forgotpassword/show') ForgotPassword?
           br
+
     div
       form(action='http://localhost:3000/users/login/facebook')
         div
